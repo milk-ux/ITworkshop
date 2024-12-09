@@ -11,62 +11,81 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/mainPage")
 public class Application extends HttpServlet {
-
-    // GETリクエストが送られてきたときに呼ばれるメソッド
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // レスポンスのコンテンツタイプを設定（HTMLとして表示）
-        response.setContentType("text/html;charset=UTF-8");
-        
-        // 出力用のPrintWriterオブジェクトを取得
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	response.setContentType("text/html;charset=UTF-8");
+	
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>");
         out.println("<title>メインページ</title>");
         
-        // Google Fontsのリンクを追加（Poppinsフォントを使用）
         out.println("<link href='https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap' rel='stylesheet'>");
-        
-        // CSSスタイルを追加
         out.println("<style>");
-        out.println("html, body { margin: 0; padding: 0; height: 100%; width: 100%; }"); // 高さと幅を100%に設定して画面全体を占める
-        out.println("body { display: flex; flex-wrap: wrap; height: 100%; width: 100%; justify-content: center; align-items: center; }"); // 中央に配置
-        out.println(".section { flex: 1 0 25%; height: 100%; }"); // 各セクションの高さを100%に変更
-        out.println(".yellow { background-color: #fef7b3; }");  // 薄めのパステルイエロー
-        out.println(".green { background-color: #a8e6a1; }");   // 薄めのパステルグリーン
-        out.println(".purple { background-color: #d1c4e9; }");  // 薄めのパステルパープル
-        out.println(".blue { background-color: #a0d8ef; }");    // 薄めのパステル水色
         
-        // タイトルのスタイルを追加
-        out.println("h1 {");
-        out.println("    position: absolute;");
-        out.println("    top: 50%;");
-        out.println("    left: 50%;");
-        out.println("    transform: translate(-50%, -50%);");
-        out.println("    font-family: 'Poppins', sans-serif;");  // ゴシック体フォント
-        out.println("    font-weight: 600;");  // 太字
-        out.println("    font-size: 4.5em;");  // 文字を大きく設定
-        out.println("    color: black;");  // 文字色を黒に設定
-        out.println("    white-space: nowrap;");
-        out.println("    margin: 0;");
-        out.println("    display: inline-block;");
-        out.println("    padding: 80px 80px;");
-        out.println("    background-color: rgba(255, 255, 255, 0.7);");  // 透け感のある白色背景
-        out.println("    border-radius: 15px;");  // 丸みをつける
+        
+        
+        // ここから下はメインページのデザインに関するコード
+        
+        // 背景色を#a1d6e2（薄緑色）に設定し、#1995ad（深緑色）の外枠を追加。
+        out.println("html, body {");
+        out.println("margin: 0;");
+        out.println("padding: 0;");
+        out.println("height: 100%;");
+        out.println("width: 100%;");
+        out.println("background-color: #a1d6e2;");  // 背景色
+        out.println("border: 15px solid #1995ad;");  // 外枠
+        out.println("box-sizing: border-box;");  // 枠を含めたサイズ調整
         out.println("}");
         
-        out.println("</style>");
+        // body全体を中央揃え
+        out.println("body { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }");
         
+        // 「クロノタイプ診断テスト」タイトルデザイン
+        out.println("h1 {");
+        out.println("font-family: 'Noto Sans JP', sans-serif;");
+        out.println("font-weight: 600;");
+        out.println("font-size: 5em;");
+        out.println("color: #333333;");
+        out.println("margin-bottom: 50px;");
+        out.println("padding: 35px 40px;");
+        out.println("text-align: center;");
+        out.println("background-color: white;");
+        out.println("border: none;");
+        out.println("}");
+
+        // 「診断を開始」ボタンデザイン
+        out.println("form {");
+        out.println("display: flex;");
+        out.println("justify-content: center;");
+        out.println("}");
+        out.println("input[type='submit'] {");
+        out.println("font-family: 'Noto Sans JP', sans-serif;");
+        out.println("font-weight: 700;"); 
+        out.println("font-size: 1.5em;");
+        out.println("letter-spacing: 2px;");
+        out.println("padding: 20px 40px;");
+        out.println("background-color: #1995ad;");
+        out.println("color: white;");
+        out.println("border: 2px solid #1995ad;");
+        out.println("border-radius: 25px;");
+        out.println("cursor: pointer;");
+        out.println("transition: background-color 0.3s ease, border-color 0.3s ease;");
+        out.println("}");
+
+        // ホバー時のスタイル
+        out.println("input[type='submit']:hover {");
+        out.println("background-color: #177c89;");
+        out.println("border-color: #177c89;");
+        out.println("}");
+
+        out.println("</style>");
         out.println("</head>");
         out.println("<body>");
         
-        // 横並びに4つのdivを作成（縦方向にも均等に配置）
-        out.println("<div class='section yellow'></div>");
-        out.println("<div class='section green'></div>");
-        out.println("<div class='section purple'></div>");
-        out.println("<div class='section blue'></div>");
-        
-        // タイトルの囲いボックスを作成
+        // タイトルを囲むdivを作成
+        out.println("<div>");
         out.println("<h1>クロノタイプ診断テスト</h1>");
+        out.println("</div>");
         
         // 診断ボタンのフォーム
         out.println("<form action='/diagnosis' method='POST'>");
