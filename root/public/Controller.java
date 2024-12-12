@@ -1,6 +1,7 @@
 package chronotype;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,78 +9,72 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/diagnosis")  // この URL にアクセスしたときにこのサーブレットが呼ばれます
+@WebServlet("/diagnosis")
 public class Controller extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 診断ページを表示
+
+    private static final String[] QUESTIONS = {
+        "1. あなたが理想的な起床時間は？",
+        "2. 朝起きたときの気分は？",
+        "3. 夜の過ごし方は？",
+        "4. 一番集中できる時間帯は？",
+        "5. あなたの睡眠習慣は？",
+        "6. 自分の生活リズムについて、どう感じますか？",
+        "7. あなたの性格に一番近いものは？"
+    };
+
+    private static final String[][] OPTIONS = {
+        {"A. 午前7～8時", "B. 午前10時以降", "C. 特にない（寝不足でも平気）", "D. 午前5～6時"},
+        {"A. 普通", "B. だるい、動きたくない", "C. 疲れやすい、集中しにくい", "D. 朝から元気で活動的"},
+        {"A. 寝る準備をしてリラックス", "B. 夜が一番集中できる", "C. ベッドにいても寝付けない", "D. 早めに寝る"},
+        {"A. 午前中", "B. 夜", "C. 不規則、いつも変わる", "D. 朝早い時間"},
+        {"A. 規則的で7～8時間寝る", "B. 夜更かしをすることが多い", "C. 睡眠不足や浅い眠りが多い", "D. 早寝早起きが習慣になっている"},
+        {"A. 日光に合わせて動いている", "B. 夜型だと感じる", "C. 睡眠の質が悪い", "D. 朝型だと感じる"},
+        {"A. 社交的で協調性がある", "B. 独立心が強い", "C. 完璧主義で敏感", "D. リーダーシップがある"}
+    };
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.getRequestDispatcher("/diagnosisPage.jsp").forward(request, response);
+        PrintWriter out = response.getWriter();
+
+        int questionIndex = Integer.parseInt(request.getParameter("q") == null ? "0" : request.getParameter("q"));
+
+        // 質問がすべて終わったら結果ページへ
+        if (questionIndex >= QUESTIONS.length) {
+            response.sendRedirect("/result");
+            return;
+        }
+
+        out.println("<html><head><title>クロノタイプ診断</title></head><body>");
+        out.println("<h1>クロノタイプ診断</h1>");
+        out.println("<p>" + QUESTIONS[questionIndex] + "</p>");
+        out.println("<form action='/diagnosis' method='POST'>");  // ここをPOSTに変更
+
+        // 選択肢を表示
+        for (String option : OPTIONS[questionIndex]) {
+            out.println("<label><input type='radio' name='answer' value='" + option.charAt(0) + "'>" + option + "</label><br>");
+        }
+
+        // 次の質問番号を渡す
+        out.println("<input type='hidden' name='q' value='" + (questionIndex + 1) + "'>");
+        out.println("<input type='submit' value='次へ'>");
+        out.println("</form></body></html>");
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // ユーザーの回答を取得
-        String morningTime = request.getParameter("morningTime");
-        String nightTime = request.getParameter("nightTime");
-        String activityLevel = request.getParameter("activityLevel");
-        String sleepPattern = request.getParameter("sleepPattern");
-
-        // クロノタイプの診断を行う
-        String chronotype = determineChronotype(morningTime, nightTime, activityLevel, sleepPattern);
-
-        // 結果をリクエストにセット
-        request.setAttribute("chronotype", chronotype);
-
-        // 結果ページにリダイレクト
-        request.getRequestDispatcher("/resultPage.jsp").forward(request, response);
-    }
-
-    // クロノタイプ判定ロジック
-    private String determineChronotype(String morningTime, String nightTime, String activityLevel, String sleepPattern) {
-        int score = 0;
-
-        // 朝起きる時間帯の判定
-        if ("early".equals(morningTime)) {
-            score += 2;  // ライオン型
-        } else if ("normal".equals(morningTime)) {
-            score += 1;  // クマ型
+        String answer = request.getParameter("answer");
+        String questionIndexStr = request.getParameter("q");
+        
+        if (answer != null && questionIndexStr != null) {
+            int questionIndex = Integer.parseInt(questionIndexStr);
+            
+            // 回答を処理（たとえば、データベースに保存するなど）
+            // 次の質問へ進むためにリダイレクト
+            response.sendRedirect("/diagnosis?q=" + (questionIndex + 1));
         } else {
-            score += 0;  // オオカミ型
-        }
-
-        // 夜寝る時間帯の判定
-        if ("early".equals(nightTime)) {
-            score += 1;  // ライオン型、クマ型
-        } else if ("normal".equals(nightTime)) {
-            score += 1;  // クマ型
-        } else {
-            score += 2;  // オオカミ型
-        }
-
-        // 活動のピーク時間
-        if ("morning".equals(activityLevel)) {
-            score += 2;  // ライオン型
-        } else if ("afternoon".equals(activityLevel)) {
-            score += 1;  // クマ型
-        } else {
-            score += 0;  // オオカミ型
-        }
-
-        // 睡眠パターンの不規則さ
-        if ("regular".equals(sleepPattern)) {
-            score += 2;  // ライオン型、クマ型
-        } else {
-            score += 0;  // イルカ型
-        }
-
-        // スコアに基づいてクロノタイプを判定
-        if (score >= 7) {
-            return "ライオン型（朝型）";
-        } else if (score >= 5) {
-            return "クマ型（中間型）";
-        } else if (score >= 3) {
-            return "オオカミ型（夜型）";
-        } else {
-            return "イルカ型（不規則型）";
+            // 必要な情報が足りない場合のエラーハンドリング
+            response.sendRedirect("/mainPage");
         }
     }
 }

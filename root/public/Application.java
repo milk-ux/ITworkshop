@@ -11,22 +11,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/mainPage")
 public class Application extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	response.setContentType("text/html;charset=UTF-8");
-	
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<head>");
         out.println("<title>メインページ</title>");
-        
         out.println("<link href='https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap' rel='stylesheet'>");
         out.println("<style>");
         
-        
-        
-        // ここから下はメインページのデザインに関するコード
-        
-        // 背景色を#a1d6e2（薄緑色）に設定し、#1995ad（深緑色）の外枠を追加。
+        // メインページのデザインに関するコード
         out.println("html, body {");
         out.println("margin: 0;");
         out.println("padding: 0;");
@@ -37,10 +31,7 @@ public class Application extends HttpServlet {
         out.println("box-sizing: border-box;");  // 枠を含めたサイズ調整
         out.println("}");
         
-        // body全体を中央揃え
         out.println("body { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }");
-        
-        // 「クロノタイプ診断テスト」タイトルデザイン
         out.println("h1 {");
         out.println("font-family: 'Noto Sans JP', sans-serif;");
         out.println("font-weight: 600;");
@@ -52,15 +43,11 @@ public class Application extends HttpServlet {
         out.println("background-color: white;");
         out.println("border: none;");
         out.println("}");
-
-        // 「診断を開始」ボタンデザイン
-        out.println("form {");
-        out.println("display: flex;");
-        out.println("justify-content: center;");
-        out.println("}");
+        
+        out.println("form { display: flex; justify-content: center; }");
         out.println("input[type='submit'] {");
         out.println("font-family: 'Noto Sans JP', sans-serif;");
-        out.println("font-weight: 700;"); 
+        out.println("font-weight: 700;");
         out.println("font-size: 1.5em;");
         out.println("letter-spacing: 2px;");
         out.println("padding: 20px 40px;");
@@ -71,23 +58,16 @@ public class Application extends HttpServlet {
         out.println("cursor: pointer;");
         out.println("transition: background-color 0.3s ease, border-color 0.3s ease;");
         out.println("}");
-
-        // ホバー時のスタイル
-        out.println("input[type='submit']:hover {");
-        out.println("background-color: #177c89;");
-        out.println("border-color: #177c89;");
-        out.println("}");
+        out.println("input[type='submit']:hover { background-color: #177c89; border-color: #177c89; }");
 
         out.println("</style>");
         out.println("</head>");
         out.println("<body>");
-        
-        // タイトルを囲むdivを作成
         out.println("<div>");
         out.println("<h1>クロノタイプ診断テスト</h1>");
         out.println("</div>");
         
-        // 診断ボタンのフォーム
+        // POSTリクエストを送信するフォーム
         out.println("<form action='/diagnosis' method='POST'>");
         out.println("<input type='submit' value='診断を開始'>");
         out.println("</form>");
