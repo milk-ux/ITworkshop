@@ -45,20 +45,100 @@ public class Controller extends HttpServlet {
             return;
         }
 
-        out.println("<html><head><title>クロノタイプ診断</title></head><body>");
+        out.println("<html><head><title>クロノタイプ診断</title>");
+        
+        // CSSスタイル追加
+        out.println("<style>");
+        out.println("body {");
+        out.println("    background-color: #caeded;");  // 背景色を指定
+        out.println("    font-family: 'Nunito', sans-serif;");  // Nunitoフォントを指定
+        out.println("    margin: 0;");
+        out.println("    padding: 0;");
+        out.println("}");
+        out.println("h1 {");
+        out.println("    text-align: center;");
+        out.println("    font-size: 2em;");
+        out.println("    color: #333;");
+        out.println("    padding-top: 30px;");
+        out.println("}");
+        out.println("p {");
+        out.println("    font-size: 1.2em;");
+        out.println("    text-align: center;");
+        out.println("    margin-top: 20px;");
+        out.println("    color: #333;");
+        out.println("}");
+        out.println("form {");
+        out.println("    display: flex;");
+        out.println("    flex-direction: column;");
+        out.println("    align-items: center;");
+        out.println("}");
+        out.println(".question {");
+        out.println("    font-size: 1.5em;");
+        out.println("    margin: 20px 0;");
+        out.println("    text-align: center;");
+        out.println("    width: 80%;");
+        out.println("    padding: 20px;");
+        out.println("    background-color: #ffffff;");
+        out.println("    border-radius: 10px;");
+        out.println("    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);");
+        out.println("}");
+        out.println(".options {");
+        out.println("    display: flex;");
+        out.println("    flex-direction: column;");  // 縦並びに変更
+        out.println("    justify-content: center;");
+        out.println("    width: 80%;");
+        out.println("    margin-top: 20px;");
+        out.println("}");
+        out.println(".option-box {");
+        out.println("    margin: 10px;");
+        out.println("    padding: 10px 20px;");
+        out.println("    background-color: #ffffff;");
+        out.println("    border: 1px solid #ccc;");
+        out.println("    border-radius: 8px;");
+        out.println("    font-size: 1.1em;");
+        out.println("    min-width: 150px;");  // 横幅を文字サイズに合わせて調整
+        out.println("    text-align: center;");
+        out.println("    box-sizing: border-box;");
+        out.println("}");
+        out.println("input[type='submit'] {");
+        out.println("    background-color: #177c89;");
+        out.println("    color: white;");
+        out.println("    padding: 10px 20px;");
+        out.println("    border-radius: 8px;");
+        out.println("    border: none;");
+        out.println("    cursor: pointer;");
+        out.println("    font-size: 1.2em;");
+        out.println("    margin-top: 20px;");
+        out.println("}");
+        out.println("input[type='submit']:hover {");
+        out.println("    background-color: #145d6e;");
+        out.println("}");
+        out.println("</style>");
+        
+        out.println("</head><body>");
         out.println("<h1>クロノタイプ診断</h1>");
+        
+        // 質問部分を中央に配置
+        out.println("<div class='question'>");
         out.println("<p>" + QUESTIONS[questionIndex] + "</p>");
-        out.println("<form action='/diagnosis' method='POST'>");  // ここをPOSTに変更
-
-        // 選択肢を表示
+        out.println("</div>");
+        
+        // 選択肢部分を縦並びに
+        out.println("<form action='/diagnosis' method='POST'>");
+        out.println("<div class='options'>");
         for (String option : OPTIONS[questionIndex]) {
-            out.println("<label><input type='radio' name='answer' value='" + option.charAt(0) + "'>" + option + "</label><br>");
+            out.println("<div class='option-box'>");
+            out.println("<label><input type='radio' name='answer' value='" + option.charAt(0) + "'> " + option + "</label>");
+            out.println("</div>");
         }
-
+        out.println("</div>");
+        
         // 次の質問番号を渡す
         out.println("<input type='hidden' name='q' value='" + (questionIndex + 1) + "'>");
         out.println("<input type='submit' value='次へ'>");
-        out.println("</form></body></html>");
+        out.println("</form>");
+        
+        out.println("</body></html>");
     }
 
     @Override

@@ -20,11 +20,60 @@ public class ResultController extends HttpServlet {
         String result = "ライオン型";  // 例としてライオン型を設定
 
         // 結果ページの表示
-        out.println("<html><head><title>診断結果</title></head><body>");
+        out.println("<html><head><title>診断結果</title>");
+        
+        // Google FontsからNunitoフォントを読み込む
+        out.println("<link href='https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap' rel='stylesheet'>");
+
+        // CSSのスタイル部分を修正
+        out.println("<style>");
+        out.println("body {");
+        out.println("    background-color: #f9f9f9;");  // 背景色
+        out.println("    border-left: 25px solid #caeded;");  // 左に縦の外枠
+        out.println("    border-right: 25px solid #caeded;");  // 右にも縦の外枠（必要なら）
+        out.println("    margin: 0;");
+        out.println("    padding: 0;");
+        out.println("    font-family: 'Nunito', sans-serif;");  // Nunitoフォントを指定
+        out.println("}");
+        out.println("h1 {");
+        out.println("    text-align: center;");
+        out.println("    font-size: 2em;");
+        out.println("    color: #333;");
+        out.println("}");
+        out.println("p {");
+        out.println("    padding: 20px;");
+        out.println("    text-align: justify;");
+        out.println("    font-size: 1.2em;");
+        out.println("    color: #333;");
+        out.println("}");
+        
+        // 「トップページに戻る」ボタンのスタイルを修正
+        out.println("a {");
+        out.println("    display: block;");
+        out.println("    text-align: center;");
+        out.println("    margin-top: 20px;");
+        out.println("    font-size: 1.2em;");
+        out.println("    color: white;");
+        out.println("    background-color: #177c89;");  // ターコイズブルー
+        out.println("    padding: 15px;");
+        out.println("    text-decoration: none;");
+        out.println("    border-radius: 12px;");  // 丸みを帯びた枠
+        out.println("    width: 200px;");
+        out.println("    margin: 20px auto;");
+        out.println("    transition: background-color 0.3s ease;");
+        out.println("}");
+        out.println("a:hover {");
+        out.println("    background-color: #145d6e;");  // ホバー時に少し暗くする
+        out.println("}");
+        
+        out.println("</style>");
+        
+        out.println("</head><body>");
         out.println("<h1>診断結果</h1>");
 
         if (result.equals("オオカミ型")) {
-            out.println("<p>あなたはオオカミ型です！夜型で自由に過ごしたいあなたにぴったりのクロノタイプです。"
+            out.println("<p>あなたはオオカミ型です！<br>"
+            		+ "夜型で、自由に過ごすことを好むあなたにぴったりのクロノタイプです。"
             		+ "オオカミ型は、夕方から夜にかけて最もパフォーマンスが上がる夜型タイプです。"
             		+ "朝に弱く、目覚ましが鳴ってもなかなか起きられません。起きても午前中はエンジンがかからないため、"
             		+ "重要な会議やクリエイティブな仕事は避けた方が無難です。日が沈むころには俄然元気になり、"
@@ -40,7 +89,7 @@ public class ResultController extends HttpServlet {
             		+ "毎日の眠りが深く、体内時計は4つのタイプの中でも最も太陽の動きに合っています。"
             		+ "十分な睡眠がとれなかった日に無気力感や眠気に襲われるのもクマ型の特徴です。"
             		+ "7～8時間が必要な睡眠時間ですが、できれば8時間欲しいところです。"
-            		+ "現代の一般的な学校・会社制度のタイムスケジュールに問題なく適応できるクロノタイプです。</p>");
+            		+ "現代の一般的な学校・会社制度に問題なく適応できるクロノタイプです。</p>");
             
         } else if (result.equals("ライオン型")) {
             out.println("<p>あなたはライオン型です！朝から活動的で、早寝早起きの健康的なタイプです。"
@@ -61,7 +110,7 @@ public class ResultController extends HttpServlet {
             		+ "6時間程度の睡眠でも1日活動することができます。</p>");
         }
 
-        out.println("<a href='/mainPage'>メインページに戻る</a>");
+        out.println("<a href='/mainPage'>トップページへ戻る</a>");
         out.println("</body></html>");
     }
 }
