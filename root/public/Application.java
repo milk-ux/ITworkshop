@@ -29,11 +29,14 @@ public class Application extends HttpServlet {
         out.println("background-color: #a1d6e2;");  // 背景色
         out.println("border: 15px solid #1995ad;");  // 外枠
         out.println("box-sizing: border-box;");  // 枠を含めたサイズ調整
+        out.println("font-family: 'Yu Gothic UI', '游ゴシック体', sans-serif;");  // 游ゴシック体を指定
         out.println("}");
         
         out.println("body { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }");
+        
+        // クロノタイプ診断テスト
         out.println("h1 {");
-        out.println("font-family: 'Noto Sans JP', sans-serif;");
+        out.println("font-family: 'Yu Gothic UI', '游ゴシック体', sans-serif;");
         out.println("font-weight: 600;");
         out.println("font-size: 5em;");
         out.println("color: #333333;");
@@ -42,19 +45,22 @@ public class Application extends HttpServlet {
         out.println("text-align: center;");
         out.println("background-color: white;");
         out.println("border: none;");
+        out.println("letter-spacing: 5px;");  // 文字の間隔を5px開ける
         out.println("}");
-        
+
         out.println("form { display: flex; justify-content: center; }");
+
+        // 診断を開始ボタンにも丸みを追加
         out.println("input[type='submit'] {");
-        out.println("font-family: 'Noto Sans JP', sans-serif;");
-        out.println("font-weight: 700;");
+        out.println("font-family: 'Yu Gothic UI', '游ゴシック体', sans-serif;");
+        out.println("font-weight: normal;");  // 太字を解除
         out.println("font-size: 1.5em;");
         out.println("letter-spacing: 2px;");
         out.println("padding: 20px 40px;");
         out.println("background-color: #1995ad;");
         out.println("color: white;");
         out.println("border: 2px solid #1995ad;");
-        out.println("border-radius: 25px;");
+        out.println("border-radius: 40px;");  // ボタンに丸みを帯びさせる
         out.println("cursor: pointer;");
         out.println("transition: background-color 0.3s ease, border-color 0.3s ease;");
         out.println("}");
