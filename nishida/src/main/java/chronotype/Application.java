@@ -74,7 +74,8 @@ public class Application extends HttpServlet {
         out.println("</div>");
 
         // POSTリクエストを送信するフォーム
-        out.println("<form action='/diagnosis' method='GET'>");  // GETに変更して、質問の開始番号を送信
+        out.println("<form action='/diagnosis' method='GET'>");  // qパラメータ付きでGET送信
+        out.println("<input type='hidden' name='q' value='0'>");  // 最初の質問から開始
         out.println("<input type='submit' value='診断を開始'>");
         out.println("</form>");
         
